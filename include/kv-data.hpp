@@ -4,6 +4,7 @@
 #include <unordered_map>
 #include <boost/filesystem.hpp>
 #include <boost/asio.hpp>
+#include <iostream>
 
 
 class KVData
@@ -18,6 +19,12 @@ public:
 
     std::string get(std::string key);
     void set(std::string key, std::string value);
+    inline std::string get_random_key() {
+        auto it = data.begin();
+        auto adv = std::rand() % data.size();
+        std::advance(it, adv);
+        return it->first;
+    }
 
 private:
     boost::filesystem::path path;

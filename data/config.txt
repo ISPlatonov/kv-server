@@ -1,3 +1,6 @@
-tree Blue
-reads 10
-writes 1
+tree tall
+sea blue
+grass green
+ally good
+enemy bad
+friend best

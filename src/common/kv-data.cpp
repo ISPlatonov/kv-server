@@ -23,10 +23,10 @@ KVData::KVData(std::string path)
     {
         std::cout << "File does not exist" << std::endl;
     }
-    for (auto &pair : data)
-    {
-        std::cout << pair.first << " " << pair.second << std::endl;
-    }
+    // for (auto &pair : data)
+    // {
+    //     std::cout << pair.first << " " << pair.second << std::endl;
+    // }
 }
 
 

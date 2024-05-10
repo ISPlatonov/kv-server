@@ -37,28 +37,33 @@ void udp_server::handle_receive(shared_session session, const boost::system::err
 {
     std::string message_rcv = std::string(session->recv_buffer_.begin(), bytes_transferred);
     // parse 2 arguments
-    if (std::count(message_rcv.begin(), message_rcv.end(), ' ') != 1) {
-        std::cout << "Invalid request: " << message_rcv << "\n";
-        receive_session();
-        return;
-    }
-    else {
-        std::string key = message_rcv.substr(0, message_rcv.find(' '));
-        std::string value = message_rcv.substr(message_rcv.find(' ') + 1);
-        if (key == "get") {
-            std::string response = kvdata.get(value);
-            session->message = response;
+    auto arg_count = std::count(message_rcv.begin(), message_rcv.end(), ' ') + 1;
+    switch (arg_count) {
+        case 2: {
+            std::string command = message_rcv.substr(0, message_rcv.find(' '));
+            std::string key = message_rcv.substr(message_rcv.find(' ') + 1);
+            if (command == "get") {
+                std::string response = kvdata.get(key);
+                session->message = response;
+            }
         }
-        else if (key == "set") {
-            kvdata.set(key, value);
-            session->message = "OK";
+            break;
+        case 3: {
+            std::string command = message_rcv.substr(0, message_rcv.find(' '));
+            std::string key = message_rcv.substr(command.size() + 1, message_rcv.find(' ', command.size() + 1) - command.size() - 1);
+            std::string value = message_rcv.substr(command.size() + 1 + key.size() + 1, message_rcv.find(' ', command.size() + 1 + key.size() + 1) - command.size() - 1 - key.size() - 1);
+            if (command == "set") {
+                kvdata.set(key, value);
+                session->message = "OK";
+            }
         }
-        else {
+            break;
+        default:
             std::cout << "Invalid request: " << message_rcv << "\n";
             receive_session();
-            return;
-        }
+            break;
     }
+
     // now, handle the current session on any available pool thread
     boost::asio::post(socket_.get_executor(), boost::bind(&udp_session::handle_request, session, ec));
 
