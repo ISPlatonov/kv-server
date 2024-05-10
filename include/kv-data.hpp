@@ -14,10 +14,10 @@ public:
      * 
      * @param path 
      */
-    KVData(std::string path);
+    KVData(std::string path = "data/config.txt");
 
-    inline std::string get(std::string key) { return data.count(key) ? data[key] : ""; }
-    inline void set(std::string key, std::string value) { data[key] = value; }
+    std::string get(std::string key);
+    void set(std::string key, std::string value);
 
 private:
     boost::filesystem::path path;

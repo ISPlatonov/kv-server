@@ -2,6 +2,7 @@
 
 #include "udp_session.hpp"
 #include <boost/asio.hpp>
+#include "kv-data.hpp"
 
 
 class udp_server
@@ -20,6 +21,7 @@ private:
     boost::asio::ip::udp::socket socket_;
     boost::asio::io_context::strand strand_;
 
+    KVData kvdata;
+
     friend struct udp_session;
-    
 };

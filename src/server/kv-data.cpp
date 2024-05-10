@@ -28,3 +28,25 @@ KVData::KVData(std::string path)
         std::cout << pair.first << " " << pair.second << std::endl;
     }
 }
+
+
+std::string KVData::get(std::string key)
+{
+    if (data.find(key) != data.end())
+    {
+        return data[key];
+    }
+    return "Key not found";
+}
+
+
+void KVData::set(std::string key, std::string value)
+{
+    data[key] = value;
+    // std::ofstream file(this->path.string());
+    // for (auto &pair : data)
+    // {
+    //     file << pair.first << " " << pair.second << std::endl;
+    // }
+    // file.close();
+}

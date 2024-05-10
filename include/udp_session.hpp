@@ -23,7 +23,7 @@ struct udp_session : boost::enable_shared_from_this<udp_session>
     }
 
     boost::asio::ip::udp::endpoint remote_endpoint_;
-    boost::array<char, 100> recv_buffer_;
+    boost::array<char, 128> recv_buffer_;
     std::string message;
     udp_server* server_;
 };

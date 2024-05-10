@@ -11,7 +11,8 @@ void send_request(boost::asio::io_context &io_context, udp::endpoint receiver_en
         udp::socket socket(io_context);
         socket.open(udp::v4());
 
-        boost::array<char, 1> send_buf = {{0}};
+        // send 'get key' request
+        std::string send_buf = "get tree";
         socket.send_to(boost::asio::buffer(send_buf), receiver_endpoint);
 
         boost::array<char, 128> recv_buf;
@@ -19,7 +20,7 @@ void send_request(boost::asio::io_context &io_context, udp::endpoint receiver_en
         size_t len = socket.receive_from(
             boost::asio::buffer(recv_buf), sender_endpoint);
 
-        //std::cout.write(recv_buf.data(), len);
+        std::cout << "Received response from " << sender_endpoint << ": " << std::string(recv_buf.begin(), len) << std::endl;
     }
     catch (std::exception &e)
     {
