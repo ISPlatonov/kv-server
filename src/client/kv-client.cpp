@@ -19,7 +19,7 @@ void send_request(boost::asio::io_context &io_context, udp::endpoint receiver_en
         size_t len = socket.receive_from(
             boost::asio::buffer(recv_buf), sender_endpoint);
 
-        std::cout.write(recv_buf.data(), len);
+        //std::cout.write(recv_buf.data(), len);
     }
     catch (std::exception &e)
     {

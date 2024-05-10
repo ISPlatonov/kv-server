@@ -19,4 +19,6 @@ FetchContent_MakeAvailable(Boost)
 include_directories(include)
 add_subdirectory (src)
 
-install(DIRECTORY data DESTINATION ${CMAKE_BINARY_DIR}/bin)
+# copy data directory to build directory
+file(COPY data DESTINATION ${CMAKE_BINARY_DIR})
+file(COPY data DESTINATION ${CMAKE_BINARY_DIR}/bin)
