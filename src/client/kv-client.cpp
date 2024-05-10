@@ -3,8 +3,8 @@
 #include <boost/asio.hpp>
 #include <string>
 #include <unordered_map>
-#include "kv-data.hpp"
 #include <random>
+#include "kv-data.hpp"
 
 using boost::asio::ip::udp;
 

@@ -5,8 +5,6 @@
 #include <unordered_map>
 #include <boost/filesystem.hpp>
 #include <boost/asio.hpp>
-#include <boost/thread.hpp>
-#include <iostream>
 
 
 class KVData

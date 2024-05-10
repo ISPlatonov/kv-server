@@ -2,8 +2,6 @@
 #include <boost/asio.hpp>
 #include <boost/make_shared.hpp>
 #include <boost/bind/bind.hpp>
-#include <algorithm>
-#include <iostream>
 
 using boost::asio::ip::udp;
 
@@ -35,7 +33,7 @@ void udp_server::receive_session()
 void udp_server::handle_receive(shared_session session, const boost::system::error_code& ec, std::size_t bytes_transferred)
 {
     std::string message_rcv = std::string(session->recv_buffer_.begin(), bytes_transferred);
-    // parse 2 arguments
+    // parse arguments
     auto arg_count = std::count(message_rcv.begin(), message_rcv.end(), ' ') + 1;
     switch (arg_count) {
         case 2: {

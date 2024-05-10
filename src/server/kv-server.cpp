@@ -1,11 +1,6 @@
-﻿#include <iostream>
-#include <string>
-#include <boost/asio.hpp>
+﻿#include <boost/asio.hpp>
 #include <boost/thread.hpp>
 #include "udp_server.hpp"
-
-using boost::asio::ip::udp;
-using boost::system::error_code;
 
 
 int main()
