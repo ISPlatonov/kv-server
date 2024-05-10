@@ -65,7 +65,7 @@ int main(int argc, char *argv[])
     udp::endpoint receiver_endpoint =
         *resolver.resolve(udp::v4(), argv[1], "daytime").begin();
     
-    KVData kvdata;
+    KVData kvdata(io_context);
 
     for (size_t i = 0; i < 10000; ++i)
     {

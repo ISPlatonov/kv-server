@@ -3,7 +3,7 @@ file(GLOB SERVER_FILES server/*.cpp)
 file(GLOB CLIENT_FILES client/*.cpp)
 
 add_executable(kv-client ${CLIENT_FILES} ${COMMON_FILES})
-target_link_libraries(kv-client Boost::asio Boost::filesystem Boost::system)
+target_link_libraries(kv-client Boost::asio Boost::filesystem Boost::system Boost::thread)
 
 add_executable(kv-server ${SERVER_FILES} ${COMMON_FILES})
 target_link_libraries(kv-server Boost::asio Boost::thread Boost::filesystem)

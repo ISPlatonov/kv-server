@@ -11,7 +11,7 @@ using boost::asio::ip::udp;
 typedef boost::shared_ptr<udp_session> shared_session;
 
 
-udp_server::udp_server(boost::asio::io_service& io_service) : socket_(io_service, udp::endpoint(udp::v4(), 13)), strand_(io_service)
+udp_server::udp_server(boost::asio::io_service& io_service) : socket_(io_service, udp::endpoint(udp::v4(), 13)), strand_(io_service), kvdata(io_service, true)
 {
     receive_session();
 }
