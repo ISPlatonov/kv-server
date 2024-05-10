@@ -21,22 +21,18 @@ public:
 
     std::string get(std::string key);
     void set(std::string key, std::string value);
-    inline std::string get_random_key() {
-        auto it = data.begin();
-        auto adv = std::rand() % data.size();
-        std::advance(it, adv);
-        return it->first;
-    }
+    std::string get_random_key();
 
 private:
     // async save to file
     void save_to_file();
     void print_statistics();
+    void save_to_file_handler(const boost::system::error_code &ec);
 
     boost::filesystem::path path;
     std::unordered_map<std::string, KVStruct> data;
     // add timer and assinchrounous rewrite to file
     boost::asio::steady_timer timer;
     boost::asio::strand<boost::asio::io_context::executor_type> strand;
-    void save_to_file_handler(const boost::system::error_code &ec);
+    bool data_changed = false;
 };

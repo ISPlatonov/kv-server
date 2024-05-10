@@ -45,6 +45,7 @@ std::string KVData::get(std::string key)
 
 void KVData::set(std::string key, std::string value)
 {
+    data_changed = true;
     data.insert({key, KVStruct(value)});
 }
 
@@ -64,7 +65,9 @@ void KVData::save_to_file_handler(const boost::system::error_code &ec)
 {
     if (!ec)
     {
-        save_to_file();
+        if (data_changed)
+            save_to_file();
+        data_changed = false;
         timer.expires_after(timer.expires_from_now() + std::chrono::seconds(5));
         timer.async_wait(boost::bind(&KVData::save_to_file_handler, this, boost::asio::placeholders::error));
         timer.async_wait(boost::bind(&KVData::print_statistics, this));
@@ -82,4 +85,12 @@ void KVData::print_statistics()
     {
         std::cout << "Key: " << pair.first << "\n\tValue: " << pair.second.get_value(false) << "\n\tRead count: " << pair.second.get_read_count() << "\n\tWrite count: " << pair.second.get_write_count() << "\n\tRead count last 5s: " << pair.second.get_read_count_last_5s() << "\n\tWrite count last 5s: " << pair.second.get_write_count_last_5s() << std::endl;
     }
+}
+
+
+std::string KVData::get_random_key() {
+    auto it = data.begin();
+    auto adv = std::rand() % data.size();
+    std::advance(it, adv);
+    return it->first;
 }

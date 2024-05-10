@@ -6,7 +6,7 @@ std::string KVStruct::get_value(bool count_as_read)
 {
     if (count_as_read)
     {
-        read_count++;
+        ++read_count;
         read_times.push_back(std::chrono::system_clock::now());
     }
     return value;
@@ -15,7 +15,7 @@ std::string KVStruct::get_value(bool count_as_read)
 
 void KVStruct::set_value(std::string value)
 {
-    write_count++;
+    ++write_count;
     write_times.push_back(std::chrono::system_clock::now());
     this->value = value;
 }

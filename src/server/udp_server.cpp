@@ -2,7 +2,6 @@
 #include <boost/asio.hpp>
 #include <boost/make_shared.hpp>
 #include <boost/bind/bind.hpp>
-#include "daytime_func.hpp"
 #include <algorithm>
 #include <iostream>
 
