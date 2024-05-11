@@ -31,6 +31,7 @@ private:
     std::unordered_map<std::string, KVStruct> data;
     // add timer and assinchrounous rewrite to file
     boost::asio::steady_timer timer;
+    boost::asio::steady_timer save_timer;
     boost::asio::strand<boost::asio::io_context::executor_type> strand;
     bool data_changed = false;
 };

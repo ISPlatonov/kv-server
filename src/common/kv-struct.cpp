@@ -13,11 +13,11 @@ std::string KVStruct::get_value(bool count_as_read)
 }
 
 
-void KVStruct::set_value(std::string value)
+void KVStruct::set_value(std::string value_)
 {
     ++write_count;
     write_times.push_back(std::chrono::system_clock::now());
-    this->value = value;
+    value = value_;
 }
 
 

@@ -4,7 +4,7 @@
 #include <boost/bind.hpp>
 
 
-KVData::KVData(boost::asio::io_service& io_service, bool save_async, std::string path) : timer(io_service), strand(io_service.get_executor())
+KVData::KVData(boost::asio::io_service& io_service, bool save_async, std::string path) : timer(io_service), save_timer(io_service), strand(io_service.get_executor())
 {
     this->path = boost::filesystem::path(path);
     // read data from file
@@ -28,8 +28,9 @@ KVData::KVData(boost::asio::io_service& io_service, bool save_async, std::string
         return;
     // start timer
     timer.expires_after(std::chrono::seconds(5));
-    timer.async_wait(boost::asio::bind_executor(strand, boost::bind(&KVData::save_to_file_handler, this, boost::asio::placeholders::error)));
+    save_timer.expires_after(std::chrono::seconds(5));
     timer.async_wait(boost::bind(&KVData::print_statistics, this));
+    save_timer.async_wait(boost::asio::bind_executor(strand, boost::bind(&KVData::save_to_file_handler, this, boost::asio::placeholders::error)));
 }
 
 
@@ -50,10 +51,12 @@ void KVData::set(std::string key, std::string value)
     if (it != data.end())
     {
         it->second.set_value(value);
-        return;
+    }
+    else
+    {
+        data.insert({key, KVStruct(value)});
     }
     data_changed = true;
-    data.insert({key, KVStruct(value)});
 }
 
 
@@ -75,9 +78,8 @@ void KVData::save_to_file_handler(const boost::system::error_code &ec)
         if (data_changed)
             save_to_file();
         data_changed = false;
-        timer.expires_after(timer.expires_from_now() + std::chrono::seconds(5));
-        timer.async_wait(boost::bind(&KVData::save_to_file_handler, this, boost::asio::placeholders::error));
-        timer.async_wait(boost::bind(&KVData::print_statistics, this));
+        save_timer.expires_after(std::chrono::seconds(5));
+        save_timer.async_wait(boost::bind(&KVData::save_to_file_handler, this, boost::asio::placeholders::error));
     }
     else
     {
@@ -92,6 +94,8 @@ void KVData::print_statistics()
     {
         std::cout << "Key: " << pair.first << "\n\tValue: " << pair.second.get_value(false) << "\n\tRead count: " << pair.second.get_read_count() << "\n\tWrite count: " << pair.second.get_write_count() << "\n\tRead count last 5s: " << pair.second.get_read_count_last_5s() << "\n\tWrite count last 5s: " << pair.second.get_write_count_last_5s() << std::endl;
     }
+    timer.expires_after(std::chrono::seconds(5));
+    timer.async_wait(boost::bind(&KVData::print_statistics, this));
 }
 
 
