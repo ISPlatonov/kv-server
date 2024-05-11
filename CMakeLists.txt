@@ -21,4 +21,4 @@ add_subdirectory (src)
 
 # copy data directory to build directory
 file(COPY data DESTINATION ${CMAKE_BINARY_DIR})
-file(COPY data DESTINATION ${CMAKE_BINARY_DIR}/bin)
+install(DIRECTORY ${CMAKE_SOURCE_DIR}/data DESTINATION ${CMAKE_CURRENT_SOURCE_DIR}/bin)

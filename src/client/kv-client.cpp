@@ -20,12 +20,12 @@ std::string gen_random(const int len) {
     for (int i = 0; i < len; ++i) {
         tmp_s += alphanum[rand() % (sizeof(alphanum) - 1)];
     }
-    
+
     return tmp_s;
 }
 
 
-std::string send_request(boost::asio::io_context &io_context, udp::endpoint receiver_endpoint, const std::string& request)
+std::string send_request(boost::asio::io_context& io_context, udp::endpoint receiver_endpoint, const std::string& request)
 {
     try
     {
@@ -41,7 +41,7 @@ std::string send_request(boost::asio::io_context &io_context, udp::endpoint rece
 
         return std::string(recv_buf.begin(), len);
     }
-    catch (std::exception &e)
+    catch (std::exception& e)
     {
         std::cerr << e.what() << std::endl;
         return "";
@@ -49,7 +49,7 @@ std::string send_request(boost::asio::io_context &io_context, udp::endpoint rece
 }
 
 
-int main(int argc, char *argv[])
+int main(int argc, char* argv[])
 {
     // set random seed
     srand(time(0));
@@ -64,34 +64,36 @@ int main(int argc, char *argv[])
     udp::resolver resolver(io_context);
     udp::endpoint receiver_endpoint =
         *resolver.resolve(udp::v4(), argv[1], "daytime").begin();
-    
+
     KVData kvdata(io_context);
 
+    std::string request, response;
     for (size_t i = 0; i < 10000; ++i)
     {
+        request.clear();
+        response.clear();
         switch (i % 100)
         {
         case 0: {
             // set request
-            auto key = gen_random(5);
+            auto key = kvdata.get_random_key();
             auto value = gen_random(5);
-            std::string request = "set " + key + " " + value;
+            request = "set " + key + " " + value;
             kvdata.set(key, value);
-            std::string response = send_request(io_context, receiver_endpoint, request);
+            response = send_request(io_context, receiver_endpoint, request);
             assert(response == "OK");
-            // std::cout << "Request: " << request << " Response: " << response << std::endl;
         }
-            break;
+              break;
         default: {
             // get request
             std::string key = kvdata.get_random_key();
-            std::string request = "get " + key;
-            std::string response = send_request(io_context, receiver_endpoint, request);
+            request = "get " + key;
+            response = send_request(io_context, receiver_endpoint, request);
             assert(response == kvdata.get(key));
-            // std::cout << "Request: " << request << " Response: " << response << std::endl;
         }
-            break;
+               break;
         }
+        std::cout << "Request: " << request << " Response: " << response << std::endl;
     }
 
     return 0;

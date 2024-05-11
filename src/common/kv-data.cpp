@@ -46,6 +46,12 @@ std::string KVData::get(std::string key)
 
 void KVData::set(std::string key, std::string value)
 {
+    auto it = data.find(key);
+    if (it != data.end())
+    {
+        it->second.set_value(value);
+        return;
+    }
     data_changed = true;
     data.insert({key, KVStruct(value)});
 }
