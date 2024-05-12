@@ -1,7 +1,7 @@
 #include "kv-data.hpp"
 #include <iostream>
 #include <fstream>
-#include <boost/bind.hpp>
+#include <boost/bind/bind.hpp>
 
 
 KVData::KVData(boost::asio::io_service& io_service, bool save_async, std::string path) : timer(io_service), save_timer(io_service), strand(io_service.get_executor())
