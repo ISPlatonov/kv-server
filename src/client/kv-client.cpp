@@ -68,7 +68,7 @@ int main(int argc, char* argv[])
     KVData kvdata(io_context);
 
     std::string request, response;
-    for (size_t i = 0; i < 10000000; ++i)
+    for (size_t i = 0; i < 10000; ++i)
     {
         request.clear();
         response.clear();
