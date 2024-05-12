@@ -40,8 +40,16 @@ void udp_server::handle_receive(shared_session session, const boost::system::err
             std::string command = message_rcv.substr(0, message_rcv.find(' '));
             std::string key = message_rcv.substr(message_rcv.find(' ') + 1);
             if (command == "get") {
-                std::string response = kvdata.get(key);
-                session->message = response;
+                try
+                {
+                    session->message = kvdata.get(key);
+                }
+                catch(const std::exception& e)
+                {
+                    std::cerr << e.what() << '\n';
+                    session->message = "Key not found";
+                }
+                
             }
         }
             break;

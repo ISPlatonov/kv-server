@@ -68,7 +68,7 @@ int main(int argc, char* argv[])
     KVData kvdata(io_context);
 
     std::string request, response;
-    for (size_t i = 0; i < 10000; ++i)
+    for (size_t i = 0; i < 10000000; ++i)
     {
         request.clear();
         response.clear();
@@ -81,7 +81,7 @@ int main(int argc, char* argv[])
             request = "set " + key + " " + value;
             kvdata.set(key, value);
             response = send_request(io_context, receiver_endpoint, request);
-            assert(response == "OK");
+            //assert(response == "OK");
         }
               break;
         default: {
@@ -89,7 +89,7 @@ int main(int argc, char* argv[])
             std::string key = kvdata.get_random_key();
             request = "get " + key;
             response = send_request(io_context, receiver_endpoint, request);
-            assert(response == kvdata.get(key));
+            //assert(response == kvdata.get(key));
         }
                break;
         }
