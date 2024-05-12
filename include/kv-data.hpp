@@ -34,4 +34,5 @@ private:
     boost::asio::steady_timer save_timer;
     boost::asio::strand<boost::asio::io_context::executor_type> strand;
     bool data_changed = false;
+    constexpr static std::chrono::seconds save_duration = std::chrono::seconds(5);
 };

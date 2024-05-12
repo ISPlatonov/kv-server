@@ -28,7 +28,7 @@ KVData::KVData(boost::asio::io_service& io_service, bool save_async, std::string
         return;
     // start timer
     //timer.expires_after(std::chrono::seconds(5));
-    save_timer.expires_after(std::chrono::seconds(5));
+    save_timer.expires_after(KVData::save_duration);
     //timer.async_wait(boost::bind(&KVData::print_statistics, this));
     save_timer.async_wait(boost::asio::bind_executor(strand, boost::bind(&KVData::save_to_file_handler, this, boost::asio::placeholders::error)));
 }
@@ -82,7 +82,7 @@ void KVData::save_to_file_handler(const boost::system::error_code &ec)
         if (data_changed)
             save_to_file();
         data_changed = false;
-        save_timer.expires_after(std::chrono::seconds(5));
+        save_timer.expires_after(KVData::save_duration);
         save_timer.async_wait(boost::bind(&KVData::save_to_file_handler, this, boost::asio::placeholders::error));
     }
     else
@@ -96,7 +96,7 @@ void KVData::print_statistics()
 {
     for (auto& pair : data)
     {
-        std::cout << "Key: " << pair.first << "\n\tValue: " << pair.second.get_value(false) << "\n\tRead count: " << pair.second.get_read_count() << "\n\tWrite count: " << pair.second.get_write_count() << "\n\tRead count last 5s: " << pair.second.get_read_count_last_5s() << "\n\tWrite count last 5s: " << pair.second.get_write_count_last_5s() << std::endl;
+        std::cout << "Key: " << pair.first << "\n\tValue: " << pair.second.get_value(false) << "\n\tRead count: " << pair.second.get_read_count() << "\n\tWrite count: " << pair.second.get_write_count() << "\n\tRead count last 5s: " << pair.second.get_read_count_lt() << "\n\tWrite count last 5s: " << pair.second.get_write_count_lt() << std::endl;
     }
     //timer.expires_after(std::chrono::seconds(5));
     //timer.async_wait(boost::bind(&KVData::print_statistics, this));
