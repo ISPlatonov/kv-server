@@ -17,7 +17,7 @@
 class KVStruct
 {
 public:
-    KVStruct(std::string value_) : value(value_), read_count(0), write_count(0), read_count_lt(0), write_count_lt(0) {}
+    KVStruct(std::string value_) : value(value_), read_count(0), write_count(1), read_count_lt(0), write_count_lt(1) {}
     std::string get_value(bool count_as_read = true);
     void set_value(std::string value);
     inline size_t get_read_count() { return read_count.load(); }
